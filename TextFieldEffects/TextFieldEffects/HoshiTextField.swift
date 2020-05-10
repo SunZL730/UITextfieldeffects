@@ -113,7 +113,7 @@ import UIKit
     }
     
     override open func animateViewsForTextDisplay() {
-        if let text = text, text.isEmpty {
+        if text!.isEmpty {
             UIView.animate(withDuration: 0.35, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 2.0, options: .beginFromCurrentState, animations: ({
                 self.layoutPlaceholderInTextRect()
                 self.placeholderLabel.alpha = 1
@@ -122,12 +122,13 @@ import UIKit
             })
             
             activeBorderLayer.frame = self.rectForBorder(self.borderThickness.active, isFilled: false)
-            inactiveBorderLayer.frame = self.rectForBorder(self.borderThickness.inactive, isFilled: true)
-
+        } else {
+            activeBorderLayer.frame = self.rectForBorder(self.borderThickness.active, isFilled: false)
         }
     }
     
     // MARK: - Private
+    
     
     private func updateBorder() {
         inactiveBorderLayer.frame = rectForBorder(borderThickness.inactive, isFilled: !isFirstResponder)
@@ -143,13 +144,28 @@ import UIKit
         placeholderLabel.sizeToFit()
         layoutPlaceholderInTextRect()
         
-        if isFirstResponder || text!.isNotEmpty {
+        if isFirstResponder { //|| text!.isNotEmpty {
             animateViewsForTextEntry()
+        }
+        if text!.isNotEmpty {
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .beginFromCurrentState, animations: ({
+                self.placeholderLabel.frame.origin = CGPoint(x: 10, y: self.placeholderLabel.frame.origin.y)
+                self.placeholderLabel.alpha = 0
+            }), completion: { _ in
+                self.animationCompletionHandler?(.textEntry)
+            })
+            
+            layoutPlaceholderInTextRect()
+            placeholderLabel.frame.origin = activePlaceholderPoint
+
+            UIView.animate(withDuration: 0.4, animations: {
+                self.placeholderLabel.alpha = 1.0
+            })
         }
     }
     
     private func placeholderFontFromFont(_ font: UIFont) -> UIFont! {
-        let smallerFont = UIFont(descriptor: font.fontDescriptor, size: font.pointSize * placeholderFontScale)
+        let smallerFont = UIFont(name: font.fontName, size: font.pointSize * placeholderFontScale)
         return smallerFont
     }
     
