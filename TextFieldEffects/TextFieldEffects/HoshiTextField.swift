@@ -148,19 +148,19 @@ import UIKit
             animateViewsForTextEntry()
         }
         if text!.isNotEmpty {
-            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .beginFromCurrentState, animations: ({
+ /*           UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .beginFromCurrentState, animations: ({
                 self.placeholderLabel.frame.origin = CGPoint(x: 10, y: self.placeholderLabel.frame.origin.y)
                 self.placeholderLabel.alpha = 0
             }), completion: { _ in
                 self.animationCompletionHandler?(.textEntry)
             })
-            
+            */
             layoutPlaceholderInTextRect()
             placeholderLabel.frame.origin = activePlaceholderPoint
-
+/*
             UIView.animate(withDuration: 0.4, animations: {
                 self.placeholderLabel.alpha = 1.0
-            })
+            })*/
         }
     }
     
