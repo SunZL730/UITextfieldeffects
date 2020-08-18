@@ -92,6 +92,13 @@ import UIKit
         addSubview(placeholderLabel)
     }
     
+    override open func didMoveToWindow() {
+	updateBorder()
+	updatePlaceholder()
+	layer.addSublayer(inactiveBorderLayer)
+	addSubview(placeholderLabel)
+    }
+
     override open func animateViewsForTextEntry() {
         if text!.isEmpty {
             UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .beginFromCurrentState, animations: ({
